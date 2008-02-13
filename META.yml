@@ -1,0 +1,15 @@
+--- #YAML:1.0
+name:                WWW-RapidShare
+version:             v0.1.0
+abstract:            Download files from Rapidshare
+license:             ~
+generated_by:        ExtUtils::MakeMaker version 6.32
+distribution_type:   module
+requires:     
+    Class::Accessor:               0
+    WWW::Mechanize:                0
+meta-spec:
+    url:     http://module-build.sourceforge.net/META-spec-v1.2.html
+    version: 1.2
+author:
+    - Rohan Almeida <rohan@almeida.in>

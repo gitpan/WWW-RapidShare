@@ -1,0 +1,7 @@
+Changes
+Makefile.PL
+MANIFEST
+README
+t/WWW-RapidShare.t
+lib/WWW/RapidShare.pm
+META.yml                                 Module meta-data (added by MakeMaker)

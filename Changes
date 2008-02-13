@@ -1,0 +1,6 @@
+Revision history for WWW::RapidShare
+
+0.1     Wed Feb 13 14:47:37 IST 2008
+    - original version; created by h2xs 1.23 with options
+    - supports rapidshare.com PREMIUM accounts
+
