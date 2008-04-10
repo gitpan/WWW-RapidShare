@@ -2,7 +2,7 @@ package WWW::RapidShare;
 use strict; use warnings;
 use base 'Class::Accessor';
 
-use version; our $VERSION = qv('0.1');
+use version; our $VERSION = qv('0.2');
 
 use WWW::Mechanize;
 use File::Basename;
@@ -23,7 +23,7 @@ WWW::RapidShare - Download files from Rapidshare
  
 =head1 VERSION
  
-This documentation refers to WWW::RapidShare version 0.1
+This documentation refers to WWW::RapidShare version 0.2
  
  
 =head1 NOTE
@@ -42,7 +42,8 @@ This documentation refers to WWW::RapidShare version 0.1
     $rapid->password('xxxxxx');
     
     # Download the file associated with the above URL.
-    # It will be saved in current directory.
+    # A random mirror will be chosen.
+    # File will be saved in current directory.
     $rapid->download_file();
   
   
@@ -139,14 +140,31 @@ sub download_file
 
     $self->_mech->click_button(value => 'PREMIUM');
 
-    # get TeliaSonera links
-    # TODO: support all mirrors
-    my $telia_link = $self->_mech->find_link( text_regex => qr/Download via TeliaSonera/ );
-    my $file_name = basename($telia_link->url);
+    # get all download links
+    my @all_links = $self->_mech->find_all_links( text_regex => qr/Download via/ );
 
-    print "Fetching " . $telia_link->url . " ...\n";
+    # choose a random link
+    my $download_link = $all_links[_get_random_int(0,$#all_links)];
+
+    my $download_text;
+    ($download_text = $download_link->text ) =~ s/Download/Downloading/;
+    print "$download_text ...\n";
+
+    my $file_name = basename($download_link->url);
+
+    print "Fetching " . $download_link->url . " ...\n";
     print "Saving file as $file_name\n";
-    $self->_mech->get( $telia_link->url, ":content_file" => $file_name );
+    $self->_mech->get( $download_link->url, ":content_file" => $file_name );
+}
+
+
+sub _get_random_int
+{
+    my ( $min, $max ) = @_;
+
+    return $min if $min == $max;
+    ( $min, $max ) = ( $max, $min ) if $min > $max;
+    return $min + int rand( 1 + $max - $min );
 }
 
 1;
