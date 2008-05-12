@@ -1,5 +1,8 @@
 Revision history for WWW::RapidShare
 
+0.2.1   Mon May 12 14:18:41 IST 2008
+    - added dependency for the version module
+
 0.2     Thu Apr 10 18:24:52 IST 2008
     - a download mirror is now randomly chosen
 
