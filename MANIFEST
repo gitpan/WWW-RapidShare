@@ -2,6 +2,7 @@ Changes
 Makefile.PL
 MANIFEST
 README
+examples/get_file.pl
 t/WWW-RapidShare.t
 lib/WWW/RapidShare.pm
 META.yml                                 Module meta-data (added by MakeMaker)

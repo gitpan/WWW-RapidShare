@@ -2,10 +2,12 @@ package WWW::RapidShare;
 use strict; use warnings;
 use base 'Class::Accessor';
 
-use version; our $VERSION = qv('0.2.1');
+use version; our $VERSION = qv('0.3');
 
 use WWW::Mechanize;
 use File::Basename;
+use Data::Dumper;
+
 
 __PACKAGE__->mk_accessors(qw/
     url
@@ -23,7 +25,7 @@ WWW::RapidShare - Download files from Rapidshare
  
 =head1 VERSION
  
-This documentation refers to WWW::RapidShare version 0.2.1
+This documentation refers to WWW::RapidShare version 0.3
  
  
 =head1 NOTE
@@ -42,7 +44,6 @@ This documentation refers to WWW::RapidShare version 0.2.1
     $rapid->password('xxxxxx');
     
     # Download the file associated with the above URL.
-    # A random mirror will be chosen.
     # File will be saved in current directory.
     $rapid->download_file();
   
@@ -127,44 +128,23 @@ sub download_file
     my $self = shift;
 
     $self->_mech->get($self->url);
-    $self->_mech->click_button(value => 'PREMIUM');
+    $self->_mech->form_number(2);
+    $self->_mech->submit;
 
     # login
     $self->_mech->form_with_fields(qw/accountid password/);
     $self->_mech->field(accountid => $self->account_id);
     $self->_mech->field(password => $self->password);
     $self->_mech->submit();
+    $self->_mech->click_button(name => 'dl.start');
 
-    $self->_mech->form_with_fields(qw/l p/);
-    $self->_mech->submit();
+    my $ah_form = pop @{ $self->_mech->forms };
 
-    $self->_mech->click_button(value => 'PREMIUM');
+    my $file_name = basename($ah_form->action);
 
-    # get all download links
-    my @all_links = $self->_mech->find_all_links( text_regex => qr/Download via/ );
-
-    # choose a random link
-    my $download_link = $all_links[_get_random_int(0,$#all_links)];
-
-    my $download_text;
-    ($download_text = $download_link->text ) =~ s/Download/Downloading/;
-    print "$download_text ...\n";
-
-    my $file_name = basename($download_link->url);
-
-    print "Fetching " . $download_link->url . " ...\n";
+    print "Fetching " . $ah_form->action . " ...\n";
     print "Saving file as $file_name\n";
-    $self->_mech->get( $download_link->url, ":content_file" => $file_name );
-}
-
-
-sub _get_random_int
-{
-    my ( $min, $max ) = @_;
-
-    return $min if $min == $max;
-    ( $min, $max ) = ( $max, $min ) if $min > $max;
-    return $min + int rand( 1 + $max - $min );
+    $self->_mech->get( $ah_form->action, ":content_file" => $file_name );
 }
 
 1;

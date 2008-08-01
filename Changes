@@ -1,5 +1,9 @@
 Revision history for WWW::RapidShare
 
+0.3     Fri Aug  1 16:26:18 IST 2008
+    - works with the new interface of rapidshare.com
+    - added examples/get_file.pl
+
 0.2.1   Mon May 12 14:18:41 IST 2008
     - added dependency for the version module
 
