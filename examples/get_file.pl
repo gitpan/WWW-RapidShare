@@ -4,7 +4,7 @@ $|++;
 
 use WWW::RapidShare;
 
-my $url = shift or die "specify url";
+my $url = 'http://rapidshare.com/files/some_file.rar';
 
 my $rapid = WWW::RapidShare->new();
 

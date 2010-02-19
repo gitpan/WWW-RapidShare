@@ -2,7 +2,7 @@ package WWW::RapidShare;
 use strict; use warnings;
 use base 'Class::Accessor';
 
-use version; our $VERSION = qv('0.3');
+use version; our $VERSION = qv('0.3.1');
 
 use WWW::Mechanize;
 use File::Basename;
@@ -25,7 +25,7 @@ WWW::RapidShare - Download files from Rapidshare
  
 =head1 VERSION
  
-This documentation refers to WWW::RapidShare version 0.3
+This documentation refers to WWW::RapidShare version 0.3.1
  
  
 =head1 NOTE
